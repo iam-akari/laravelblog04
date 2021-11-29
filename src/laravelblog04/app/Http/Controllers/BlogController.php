@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Blog;
+use App\Http\Requests\BlogRequest;
 
 class BlogController extends Controller
 {
@@ -18,4 +19,55 @@ class BlogController extends Controller
         $blogs = Blog::all();
         return view('blog.list',['blogs'=>$blogs]);
     } 
+
+    /**
+     * ブログ詳細を表示する
+     * @param int $id
+     * @return view
+     */
+    public function showDetail($id)
+    {
+        $blog = Blog::find($id);
+
+        if(is_null($blog)){
+            \Session::flash('err_msg','データがありません。');
+            return redirect(route('blogs'));
+        }
+        
+        return view('blog.detail',['blog'=>$blog]);
+    } 
+
+    /**
+     * ブログ投稿画面を表示する
+     * @return view
+     */
+
+    public function showCreate()
+    {
+        return view('blog.form');
+    } 
+
+    /**
+     * ブログ投稿画面を表示する
+     * @return view
+     */
+
+    public function exeStore(BlogRequest $request)
+    {
+        $inputs = $request->all();
+
+        \DB::beginTransaction();
+        try {
+            \DB::commit();
+            Blog::create($inputs);
+        } catch (\Throwable $e) {
+            \DB::rollback();
+            abort(500);
+        }
+       
+        \Session::flash('err_msg','ブログを登録しました。');
+        return redirect(route('blogs'));
+    } 
+
+
 }
