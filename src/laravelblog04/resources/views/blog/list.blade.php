@@ -9,14 +9,16 @@
             <th>記事番号</th>
             <th>日付</th>
             <th>タイトル</th>
-            <th></th>
+            <th>内容</th>
         </tr>
+        @foreach($blogs as $blog)
         <tr>
-            <td>1</td>
-            <td>2020/06/30</td>
-            <td>テスト</td>
-            <td></td>
+            <td>{{ $blog->id }}</td>
+            <td>{{ $blog->updated_at }}</td>
+            <td>{{ $blog->title }}</td>
+            <td>{{ $blog->content }}</td>
         </tr>
+        @endforeach
     </table>
   </div>
 </div>
