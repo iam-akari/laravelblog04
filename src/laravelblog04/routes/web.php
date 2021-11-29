@@ -18,3 +18,9 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('/','BlogController@showList')->name('blogs');
+
+Route::get('/blog/create','BlogController@showCreate')->name('create');
+
+Route::post('/blog/store','BlogController@exeStore')->name('store');
+
+Route::get('/blog/{id}','BlogController@showDetail')->name('show');
